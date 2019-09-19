@@ -1,5 +1,5 @@
 from os.path import join
-import pandas
+import pandas as pd
 
 # URL for downloading transcript sequences file
 GENCODE_URL="ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_31/GRCh37_mapping/gencode.v31lift37.transcripts.fa.gz"
