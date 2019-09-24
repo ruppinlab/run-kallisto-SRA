@@ -13,7 +13,7 @@ SAMPLE_OUTPUT_DIR=join(OUTPUT_DIR, "{sample}")
 
 # Input Files
 SRA_FILE=join("..", "raw_data", "PRJEB23709", "sra", "{sample}.sra")
-SAMPLES_FILE=join(DATA_DIR, "SRR_Acc_list.txt")
+SAMPLES_FILE=join(DATA_DIR, "SRR_Acc_List.txt")
 
 # Intermediate Files
 TRANSCRIPT_SEQ_FILE=join(DATA_DIR, "ref_transcriptome.fq.gz")
