@@ -41,7 +41,7 @@ rule get_TPM_kallisto:
     input:
         TX2GENE_FILE,
         SAMPLES_FILE
-        # expand(H5_ABUNDANCE_FILE, sample=df["sample"])
+        expand(H5_ABUNDANCE_FILE, sample=df["sample"])
     output:
         TPM_FILE
     script:
