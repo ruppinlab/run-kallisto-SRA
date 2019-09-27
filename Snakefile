@@ -31,6 +31,7 @@ df = pd.read_csv(SAMPLES_FILE, sep="\t")
 
 rule all:
     input:
+        # INDEX_FILE
         TPM_FILE
         # expand(H5_ABUNDANCE_FILE, sample=df["sample"])
 
@@ -47,75 +48,79 @@ rule get_TPM_kallisto:
     script:
         "src/combine_kallisto_output.R"
 
-rule extract_tx2gene:
-    conda:
-        "envs/process-mRNA.yml"
-    input:
-        GENCODE_GTF
-    output:
-        TX2GENE_FILE
-    script:
-        "src/convert_GTF_to_tx2gene.py"
-
-rule decompress_GTF_file:
-    input:
-        GENCODE_GTF_GZ
-    output:
-        GENCODE_GTF
-    shell:
-        "gzip -d {input}"
-
-rule download_GTF_file:
-    params:
-        GENCODE_GTF_URL
-    output:
-        GENCODE_GTF_GZ
-    shell:
-        "wget {params} -O {output}"
-
-# rules for running kallisto
-rule process_fastq:
-    input:
-        fq1=RAW_FASTQ1_FILE,
-        fq2=RAW_FASTQ2_FILE,
-        i=INDEX_FILE
-    output:
-        H5_ABUNDANCE_FILE
-    params:
-        SAMPLE_OUTPUT_DIR
-    shell:
-        "module load kallisto; kallisto quant -i {input.i} -o {params} -t 8 -b 100 {input.fq1} {input.fq2}"
-
-# rule for downloading FASTQ files from SRA
-# rule download_SRA_files:
+# rule extract_tx2gene:
+#     conda:
+#         "envs/gtfparse.yml"
+#     input:
+#         GENCODE_GTF
 #     output:
-#         SRA_FILE
+#         TX2GENE_FILE
+#     script:
+#         "src/convert_GTF_to_tx2gene.py"
+#
+# rule decompress_GTF_file:
+#     input:
+#         GENCODE_GTF_GZ
+#     output:
+#         GENCODE_GTF
 #     shell:
-#         "module load sratoolkit; prefetch {sample}"
-
-rule extract_FASTQ_from_SRA:
-    params:
-        FASTQ_DIR
-    output:
-        RAW_FASTQ1_FILE,
-        RAW_FASTQ2_FILE
-    shell:
-        "module load sratoolkit; fastq-dump -O {params} -I --split-files {wildcards.sample}"
-
-# rules for preparing kallisto index
-rule download_gencode_GRCh38p12_transcript_sequences:
-    params:
-        GENCODE_URL
-    output:
-        TRANSCRIPT_SEQ_FILE
-    shell:
-        "wget {params} -O {output}"
-
-
-rule create_kallisto_index:
-    input:
-        TRANSCRIPT_SEQ_FILE
-    output:
-        INDEX_FILE
-    shell:
-        "module load kallisto; kallisto index -i {output} {input}"
+#         "gzip -d {input}"
+#
+# rule download_GTF_file:
+#     params:
+#         GENCODE_GTF_URL
+#     output:
+#         GENCODE_GTF_GZ
+#     shell:
+#         "wget {params} -O {output}"
+#
+# # rules for running kallisto
+# rule process_fastq:
+#     conda:
+#         "envs/kallisto.yml"
+#     input:
+#         fq1=RAW_FASTQ1_FILE,
+#         fq2=RAW_FASTQ2_FILE,
+#         i=INDEX_FILE
+#     output:
+#         H5_ABUNDANCE_FILE
+#     params:
+#         SAMPLE_OUTPUT_DIR
+#     shell:
+#         "kallisto quant -i {input.i} -o {params} -t 8 -b 100 {input.fq1} {input.fq2}"
+#
+# # rule for downloading FASTQ files from SRA
+# # rule download_SRA_files:
+# #     output:
+# #         SRA_FILE
+# #     shell:
+# #         "module load sratoolkit; prefetch {sample}"
+#
+# rule extract_FASTQ_from_SRA:
+#     params:
+#         FASTQ_DIR
+#     output:
+#         RAW_FASTQ1_FILE,
+#         RAW_FASTQ2_FILE
+#     shell:
+#         "module load sratoolkit; fastq-dump -O {params} -I --split-files {wildcards.sample}"
+#
+# # rules for preparing kallisto index
+# rule download_gencode_GRCh38p12_transcript_sequences:
+#     params:
+#         GENCODE_URL
+#     output:
+#         TRANSCRIPT_SEQ_FILE
+#     shell:
+#         "wget {params} -O {output}"
+#
+#
+# rule create_kallisto_index:
+#     conda:
+#         "envs/kallisto.yml"
+#     input:
+#         TRANSCRIPT_SEQ_FILE
+#     output:
+#         INDEX_FILE
+#     shell:
+#         "kallisto index -i {output} {input}"

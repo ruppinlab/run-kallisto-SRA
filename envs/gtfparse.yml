@@ -1,0 +1,5 @@
+name: gftparse
+channels:
+  - bioconda
+dependencies:
+  - gtfparse

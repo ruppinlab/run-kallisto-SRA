@@ -2,6 +2,6 @@ name: process-mRNA
 channels:
   - bioconda
 dependencies:
-  - bioconductor-tximport
+  - bioconductor-tximport>=1.8
+  - bioconductor-rhdf5
   - r-readr
-  - gtfparse
