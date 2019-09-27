@@ -4,14 +4,14 @@ library(readr)
 ttg <- read.csv(snakemake@input[[1]])
 #print(ttg)
 samples <- read.csv(snakemake@input[[2]], sep="\t")
-#print(samples)
-# print(length(snakemake@input))
+print(samples)
+print(length(snakemake@input))
 r <- seq(3, length(snakemake@input)+1)
 #r <- seq()
 files <- snakemake@input[r]
 files <- unlist(files)
-
-names(files) <- samples[, "sample"]
+print(files)
+# names(files) <- samples[, "sample"]
 
 all(file.exists(files))
 

@@ -100,7 +100,7 @@ rule extract_FASTQ_from_SRA:
         RAW_FASTQ1_FILE,
         RAW_FASTQ2_FILE
     shell:
-        "module load sratoolkit; fastq-dump -O {params} -I --split-files {sample}"
+        "module load sratoolkit; fastq-dump -O {params} -I --split-files {wildcards.sample}"
 
 # rules for preparing kallisto index
 rule download_gencode_GRCh38p12_transcript_sequences:
